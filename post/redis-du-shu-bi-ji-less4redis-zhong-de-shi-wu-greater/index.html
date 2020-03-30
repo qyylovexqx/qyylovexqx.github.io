@@ -159,33 +159,158 @@
 </script>
             <div class="main">
                 <div class="container">
-                    <div class="post-wrap archive">
-                        
+                    <article class="post-wrap">
+                        <header class="post-header">
+                            <h1 class="post-title">
+                                Redis读书笔记&lt;4、Redis中的事务&gt;
+                            </h1>
                             
-                                <h3>
-                                    2018
-                                </h3>
+                                <!--en-->
+                                <div class="post-meta en">
+                                    Author:
+                                    <a itemprop="author" rel="author" href="/">
+                                        biu~
+                                    </a>
+                                    <span class="post-time">
+                                Date: <a href="#">2020-03-30</a>
+                            </span>
+                                    <span class="post-readtime">Reading Time:<a
+                                    href="#">2.1
+                                    mins</a></span>
+                                    <span class="post-words">words:<a href="#">595</a></span>
+                                    
+                                            Views:
+                                            <span data-hk-page="current"> - </span>
+                                            
+                                </div>
+                                
+                        </header>
+                        
+                        <div class="post-content">
+                            <h3 id="redis的事务">Redis的事务</h3>
+<ul>
+<li>常用命令
+<ul>
+<li>DISCARD:取消事务，放弃执行事务块内的所有命令</li>
+<li>EXEC：执行所有事务块内的命令</li>
+<li>MULTI：标记一个事务块的开始</li>
+<li>UNWATCH：取消WATCH命令对所有key的监视</li>
+<li>WATCH key [key.....]：监视一个（或多个）key，如果在事务执行之前，这个（或这些）key被其他命令所改动，那么事务将被打断。</li>
+</ul>
+</li>
+<li>正常执行：MULTI   操作1 操作2  操作3 EXEC</li>
+<li>放弃事务：MULTI   操作1 操作2  操作3 DISCARD</li>
+<li>事务异常：
+<ol>
+<li>命令入队前出错也事务中的其他操作全部都不能执行：比如执行非法命令，命令没有入队。</li>
+<li>命令入队后出错事务中的其他操作可以正常执行：比如对非数字字符串进行加减操作，开启事务后，不会直接报错，而是会加入队列</li>
+</ol>
+</li>
+<li>Watch监控：
+<ul>
+<li>Watch指令，类似乐观锁，事务提交时，如果key的值已被别的客户端改变，则整个事务都不会被执行</li>
+<li>通过Watch命令在事务执行之前监控了多个keys，倘若在WATCH之后又任何Key的值发生了变化，则EXEC命令执行的事务都将被放弃，同时返回Nullmulti-bulk应答以通知调用者事务执行失败</li>
+</ul>
+</li>
+<li>事务的三个阶段
+<ol>
+<li>开启：以MULTI开始一个事务</li>
+<li>入队：将多个命令入队到事务中，接到这些命令并不会立即执行，而是放到等待执行的事务队列里</li>
+<li>执行：由EXEC命令触发事务</li>
+</ol>
+</li>
+<li>事务的三个特性
+<ol>
+<li>单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</li>
+<li>没有隔离级别的概念：队列中的命令没有提交之前都不会实际的被执行，因为事务提交前任何指令都不会被实际执行，也就不存在&quot;事务内的查询要看到事务里的更新，在事务外查询不能看到”这个问题</li>
+<li>不保证原子性：redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行，没有回滚。见事务异常第二条。</li>
+</ol>
+</li>
+</ul>
+
+                        </div>
+                        
+                            <div class="post-toc">
+                                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#redis%E7%9A%84%E4%BA%8B%E5%8A%A1">Redis的事务</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                            </div>
+                            
                                 
                                     
+                                        <!--en-->
+                                        <section class="post-copyright en">
+                                            <p class="copyright-item">
+                                                <span>Author:</span>
+                                                <span>biu~</span>
+                                            </p>
 
-                                        <article class="archive-item">
-                                            <a class="archive-item-link" href="https://qyylovexqx.github.io/post/hello-gridea/">
-                                                Tips
-                                            </a>
-                                            <span class="archive-item-date">2018-12-12 </span>
-                                        </article>
+                                            <p class="copyright-item">
+                                                <span>Permalink:</span>
+                                                <span><a href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/">https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/</a></span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>License:</span>
+                                                <span>MIT License</span>
+                                            </p>
+                                        </section>
                                         
-                                            
                                                 
-                    </div>
-                    <div class="pagination-container">
-                        
-                                                
+                                                    
+                                                        <!-- Share-->
+                                                        <span style="margin-right:15px">
+                                                    <i class="post-share"></i>
+                                                    <span>Share:</span>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/&sharesource=qzone&title=Redis读书笔记&lt;4、Redis中的事务&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585564707402&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/&sharesource=weibo&title=Redis读书笔记&lt;4、Redis中的事务&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585564707402 "><i class="fa fa-weibo "></i></a>
                                                         
+                                                                </span>
+                                                                <!--en-->
+                                                                <section class="post-tags en ">
+                                                                    <div>
+                                                                        <span>Tag(s):</span>
+                                                                        <span class="tag ">
+                        
+                                                            </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="javascript:window.history.back();">back</a>
+                                                                        <span>&dot;</span>
+                                                                        <a href="#">home</a>
+                                                                    </div>
+                                                                </section>
                                                                 
-                    </div>
+                                                                                <!---->
+                                                                                <section class="post-nav">
+                                                                                    
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
+                                                                                            Redis读书笔记&lt;5、Redis中的主从复制和哨兵模式&gt;
+                                                                                        </a>
+                                                                                        
+                                                                                            
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
+                                                                                                    Redis读书笔记&lt;3、Redis两种持久化方式&gt;
+                                                                                                </a>
+                                                                                                
+                                                                                </section>
+                    </article>
                 </div>
+                
+                                            
             </div>
+    </div>
+    </div>
     </div>
     
         <footer id="footer" class="footer">
@@ -290,5 +415,8 @@
                     
         </div>
 </body>
+<script>
+    scroll();
+</script>
 
 </html>

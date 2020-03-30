@@ -162,7 +162,7 @@
                     <article class="post-wrap">
                         <header class="post-header">
                             <h1 class="post-title">
-                                JVM读书笔记&lt;1&gt;
+                                Redis读书笔记&lt;3、Redis两种持久化方式&gt;
                             </h1>
                             
                                 <!--en-->
@@ -175,17 +175,10 @@
                                 Date: <a href="#">2020-03-30</a>
                             </span>
                                     <span class="post-readtime">Reading Time:<a
-                                    href="#">0.5
+                                    href="#">7.4
                                     mins</a></span>
-                                    <span class="post-words">words:<a href="#">153</a></span>
+                                    <span class="post-words">words:<a href="#">2046</a></span>
                                     
-                                        <span class="post-category">
-                                Category:
-                                
-                                <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">JVM</a>
-                                
-                            </span>
-                                        
                                             Views:
                                             <span data-hk-page="current"> - </span>
                                             
@@ -194,27 +187,163 @@
                         </header>
                         
                         <div class="post-content">
-                            <h1 id="运行时数据区">运行时数据区：</h1>
+                            <h3 id="redis的持久化">Redis的持久化</h3>
+<h4 id="rdbredis-database">RDB（Redis DataBase）</h4>
+<ul>
+<li>在指定的时间间隔内将内存中的数据集快照写入磁盘，也就是snapshot快照，它恢复时将快照文件直接读到内存中。Redis会单独fork/创建一个子进程来进行持久化，会先将数据写入到一个临时文件中，待持久化进程结束了，再用这个临时文件替换上次持久化好的文件。整个过程中，主进程是不进行任何IO操作的，这就确保了极高的性能，如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常铭感，那RDB方式要比AOF方式更加的高效。RBD的缺点是最后一次持久化后的数据可能丢失。
+<ul>
+<li>Fork函数：复制一个与当前进程一样的进程。新进程的所有数据（变量、环境变量、程序计数器等）都和原进程一致，但是是一个全新的进程，并作为原进程的子进程。</li>
+</ul>
+</li>
+<li>RDB保存的是dump.rdb文件</li>
+<li>配置位置：redis.conf文件中SNAPSHOTTING快照
+<ul>
+<li>Save:</li>
+<li>Stop-writes-on-bgsave-error: 默认为yes，如果配置为no，表示不在乎数据不一致。</li>
+<li>rdbcompression：默认为yes，对于存储到磁盘中的快照，可以设置是否进行压缩存储，如果为Yes,redis会采用LZF算法进行压缩，如果你不想消耗CPU来进行压缩的话，可以设置为关闭。</li>
+<li>rdbchecksum：在存储快照后，还可以让redis使用CRC64算法来进行数据校验，但是这样做会增加大约10%的性能消耗，如果希望获取到最大的性能提升，可以关闭此功能。</li>
+<li>dbfilename：rdb文件名称</li>
+<li>dir：</li>
+</ul>
+</li>
+<li>触发RDB快照的时机：
+<ul>
+<li>RBD快照默认触发时机
+<ul>
+<li>1分钟内修改了1万次 = save 60 10000</li>
+<li>5分钟内修改了10次 =save 300 10</li>
+<li>15分钟内修改了1次=save 900 1</li>
+</ul>
+</li>
+<li>可以在redis.conf配置文件中修改save参数
+<ul>
+<li>Save <seconds> <changes></li>
+<li>若没有设置任何Save指令或者save &quot;&quot; ，则表示禁用RDB持久化策略</li>
+</ul>
+</li>
+<li>save/bgsave命令(在控制台直接使用)
+<ul>
+<li>save：只管保存，其他不管，全部阻塞</li>
+<li>Bgsave：redis会在后台异步进行快照操作，快照同时还可以相应客户端请求，可以通过lastsave命令获取最后一次成功执行快照的时间</li>
+</ul>
+</li>
+<li>flushall命令，也会触发产生dump.rgb文件，但是个空文件，无意义</li>
+</ul>
+</li>
+<li>如何恢复
+<ul>
+<li>将备份文件(dump.rdb)移动到redis安装目录并启动服务即可</li>
+<li>CONFIG get dir获取目录</li>
+</ul>
+</li>
+<li>优势
 <ol>
-<li>程序计数器：记录当前线程所执行的字节码指令的地址。</li>
-<li>虚拟机栈：包含了多个栈帧(局部变量表、操作数栈、动态链接、方法出口),一个方法=一个栈帧。</li>
-<li>本地方法栈。</li>
-<li>堆：新生代(Eden、From survivor，To Survivor)、老年代。</li>
-<li>方法区：存储类信息、运行时常量池(字面量，符号引号与直接引用)、静态变量、JIT编译后的缓存代码数据。</li>
+<li>适合大规模的数据恢复</li>
+<li>对数据完整性和一致性要求不高</li>
 </ol>
-<h2 id="特点">特点：</h2>
-<p>线程共享：堆、方法区<br>
-线程独享：程序计数器、虚拟机栈、本地方法栈。</p>
-<h2 id="变化">变化</h2>
+</li>
+<li>劣势
+<ol>
+<li>在一定间隔时间做一次备份，所以如果redis意外down掉的话，就会丢失最后一次快照后的所有修改</li>
+<li>fork的时候：
+<ol>
+<li>内存的数据被克隆了一份，消耗了2倍的内存。</li>
+<li>当数据集比较大时，fork过程比较耗时，导致redis响应慢</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>关闭方式：在redis.conf文件中，若没有设置任何Save指令或者save &quot;&quot; ，则表示禁用RDB持久化策略</li>
+</ul>
+<h4 id="aofappend-only-file">AOF（Append Only File）</h4>
+<ul>
+<li>日志的形式来记录每个写操作，将Redis执行过的所有写指令记录下来（读操作不记录），只许追加文件但不可以改写文件，在aof文件体积变得过大时，自动的在后台对AOF进行重写。redis启动之初会读取该文件重新构建数据，换言之，redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作</li>
+<li>AOF保存的是appendonly.aof文件，一个只进行追加的日志文件，有序的保存了对数据库执行的所有写入操作，这些写入操作以redis协议的格式保存，因此AOF文件的内容可读性较高,其存储路径与RDB一样</li>
+<li>配置位置：redis.conf文件中Append Only Mode
+<ul>
+<li>Appendonly no  默认是no，yes就是打开aof持久化</li>
+<li>appendfilename 文件名：aof文件</li>
+<li>appendfsync
+<ol>
+<li>Always：同步持久化，每次发生数据变更会被立即记录到磁盘 性能较差，但数据完整性比较好</li>
+<li>Everysec：出厂默认推荐，异步操作，每秒记录，如果一秒内宕机，有数据丢失</li>
+<li>No</li>
+</ol>
+</li>
+<li>No-appendfsync-on-rewrite:重写时是否可以运用Appendfsync，用默认no即可，保证数据安全性</li>
+<li>Auto-aof-rewrite-min-size：设置重写的基准值</li>
+<li>Auto-aof-rewrite-percentage：设置重写的基准值</li>
+</ul>
+</li>
+<li>AOF启动/修复/恢复
+<ul>
+<li>启动：将redis.conf文件中Appendonly no 改为yes</li>
+<li>恢复：重启redis，然后加载appendonly.aof</li>
+<li>修复： redis-check-aof --fix aof文件 进行修复</li>
+</ul>
+</li>
+<li>Rewrite
+<ul>
+<li>AOF采用文件追加方式，文件会越来越大为避免出现这种情况，新增了重写机制，当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集，可以使用命令bgrewriteaof</li>
+<li>原理：AOF文件持续增大而过大时，会fork出一条新进程来将文件重写（也就是先写临时文件最后再rename），遍历新进程的内存中数据，每条记录有一条的set语句，重写aof文件的操作，并没有读取旧的aof文件，而是将整个内存中的数据库内容用命令的方式重写了一个新的aof文件，这点和快照有点类似。</li>
+<li>触发机制：redis会记录上次重写时的aof大小，默认配置是当aof文件大小是上次rewrite后大小的一倍且文件大于64M时触发</li>
+</ul>
+</li>
+<li>优势：
+<ol>
+<li>每秒同步：appendfsync always 同步持久化，每次发生数据变更会被立即记录到磁盘，性能较差但数据完整性好</li>
+<li>修改时同步：appendfsync everysec 异步操作，每秒记录 如果一秒内宕机，有数据丢失</li>
+<li>不同步：appendfsync no 从不同步</li>
+</ol>
+</li>
+<li>劣势：
+<ol>
+<li>相同数据集的数据而言aof文件要远大于rdb文件，恢复速度慢于rdb</li>
+<li>aof运行效率要慢于rdb，每秒同步策略效率较好，不同步效率和rdb相同</li>
+</ol>
+</li>
+</ul>
+<h4 id="aof和rdb">AOF和RDB</h4>
+<ul>
+<li>二者可以共存使用，但是优先使用AOF来恢复原始的数据，因为在通常情况下AOF文件保存的数据集要比RDB文件保存的数据集要完整。</li>
+<li>RDB数据不实时，同时使用两者时服务器重启也只会找AOF文件，那为什么不只使用AOF呢：
+<ul>
+<li>因为RDB更适合用于备份数据库（AOF在不断变化不好备份）</li>
+<li>AOF可能存在潜在bug，可以使用RDB作为备份</li>
+</ul>
+</li>
+<li>修复
+<ul>
+<li>如果appendonly.aof出现格式错误，则redis无法正常启动，此时可以通过 redis-check-aof --fix aof文件，进行修复。</li>
+<li>如果dump.rdb出现格式错误，此时可以通过redis-check-rdb修复rdb文件</li>
+</ul>
+</li>
+<li>建议
+<ul>
+<li>因为RDB文件只用作后备用途，建议只在Slave上持久化RDB文件，而且只需要15分钟备份一次即可</li>
+<li>如果Enable AOF，好处是在最恶劣情况下也只会丢失不超过两秒数据，启动脚本较简单只load自己的AOF文件即可，代价一是带来了持续的IO，二是AOF rewrite的最后将rewrite过程中产生的新数据写到新文件造成的阻塞几乎不可避免。只要硬盘许可，应该尽量减少AOF rewrite的频率，AOF重写的基础大小默认值64M太小，可以设置为5G以上，默认超过原大小100%大小时重写可以改到适当的数值</li>
+<li>如果不Enable AOF，仅靠Master-Slave Replication 实现高可用性也可以。能够省掉一大笔IO也减少了rewrite时带来的系统波动。代价是如果Master/Slave同时倒掉，会丢失十几分钟的数据，启动脚本也要比较两个Master/Slave中的RDB文件，载入较新的哪个。</li>
+</ul>
+</li>
+</ul>
 
                         </div>
                         
                             <div class="post-toc">
                                 <ul class="markdownIt-TOC">
-<li><a href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA">运行时数据区：</a>
+<li>
 <ul>
-<li><a href="#%E7%89%B9%E7%82%B9">特点：</a></li>
-<li><a href="#%E5%8F%98%E5%8C%96">变化</a></li>
+<li>
+<ul>
+<li><a href="#redis%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96">Redis的持久化</a>
+<ul>
+<li><a href="#rdbredis-database">RDB（Redis DataBase）</a></li>
+<li><a href="#aofappend-only-file">AOF（Append Only File）</a></li>
+<li><a href="#aof%E5%92%8Crdb">AOF和RDB</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -232,7 +361,7 @@
 
                                             <p class="copyright-item">
                                                 <span>Permalink:</span>
-                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/</a></span>
+                                                <span><a href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/</a></span>
                                             </p>
 
                                             <p class="copyright-item">
@@ -247,9 +376,9 @@
                                                         <span style="margin-right:15px">
                                                     <i class="post-share"></i>
                                                     <span>Share:</span>
-                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/"><i class="fa fa-qrcode"></i></a>
-                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/&sharesource=qzone&title=JVM读书笔记&lt;1&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585564707402&summary="><i class="fa fa-qq"></i></a>
-                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/&sharesource=weibo&title=JVM读书笔记&lt;1&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585564707402 "><i class="fa fa-weibo "></i></a>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/&sharesource=qzone&title=Redis读书笔记&lt;3、Redis两种持久化方式&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585564707402&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/&sharesource=weibo&title=Redis读书笔记&lt;3、Redis两种持久化方式&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585564707402 "><i class="fa fa-weibo "></i></a>
                                                         
                                                                 </span>
                                                                 <!--en-->
@@ -258,12 +387,6 @@
                                                                         <span>Tag(s):</span>
                                                                         <span class="tag ">
                         
-                        
-                        <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">#
-                                                JVM
-                                                    </a>
-                                                    
-                                                        
                                                             </span>
                                                                     </div>
                                                                     <div>
@@ -276,11 +399,15 @@
                                                                                 <!---->
                                                                                 <section class="post-nav">
                                                                                     
-                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/">
-                                                                                            Redis学习笔记&lt;1、基础知识&gt;
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/">
+                                                                                            Redis读书笔记&lt;4、Redis中的事务&gt;
                                                                                         </a>
                                                                                         
                                                                                             
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">
+                                                                                                    Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt;
+                                                                                                </a>
+                                                                                                
                                                                                 </section>
                     </article>
                 </div>

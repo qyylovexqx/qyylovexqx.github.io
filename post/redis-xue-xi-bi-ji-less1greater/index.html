@@ -159,33 +159,208 @@
 </script>
             <div class="main">
                 <div class="container">
-                    <div class="post-wrap archive">
-                        
+                    <article class="post-wrap">
+                        <header class="post-header">
+                            <h1 class="post-title">
+                                Redis学习笔记&lt;1、基础知识&gt;
+                            </h1>
                             
-                                <h3>
-                                    2018
-                                </h3>
+                                <!--en-->
+                                <div class="post-meta en">
+                                    Author:
+                                    <a itemprop="author" rel="author" href="/">
+                                        biu~
+                                    </a>
+                                    <span class="post-time">
+                                Date: <a href="#">2020-03-30</a>
+                            </span>
+                                    <span class="post-readtime">Reading Time:<a
+                                    href="#">2.6
+                                    mins</a></span>
+                                    <span class="post-words">words:<a href="#">750</a></span>
+                                    
+                                        <span class="post-category">
+                                Category:
+                                
+                                <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">Redis</a>
+                                
+                            </span>
+                                        
+                                            Views:
+                                            <span data-hk-page="current"> - </span>
+                                            
+                                </div>
+                                
+                        </header>
+                        
+                        <div class="post-content">
+                            <h3 id="nosql数据库的四大分类">NoSQL数据库的四大分类：</h3>
+<ul>
+<li>KV键值
+<ul>
+<li>案例：Redis</li>
+<li>应用场景：内容缓存，主要用于处理大量数据的高访问负载，也用于一些日志系统等</li>
+<li>数据模型：key/value键值对，通常用hash table来实现</li>
+<li>优点：查找速度快</li>
+<li>缺点：数据无结构化，通常只被当做字符串或者二进制数据</li>
+</ul>
+</li>
+<li>文档型数据库(Bson格式比较多)
+<ul>
+<li>案例：MongoDB(是一个基于分布式文件存储的数据库，是一个介于关系数据库和非关系数据库之间的产品)</li>
+<li>应用场景：Web应用（与Key-Value类似，Value是结构化的，不同的是数据库能够了解Value的内容）</li>
+<li>数据模型：Key-Value对应的键值对，Value为结构化数据</li>
+<li>优点：数据结构要求不严格，表结构可变，不需要像关系型数据库一样需要预先定义表结构</li>
+<li>缺点：查询性能不高，而且缺乏统一的查询语法</li>
+</ul>
+</li>
+<li>列存储数据库
+<ul>
+<li>案例：Cassandra、HBase。</li>
+<li>应用场景：分布式文件系统</li>
+<li>数据模型：以列簇式存储，将同一列数据存储在一起</li>
+<li>优点：查找速度快，可扩展性强，更容易进行分布式扩展</li>
+<li>缺点：功能相对局限</li>
+</ul>
+</li>
+<li>图关系数据库
+<ul>
+<li>案例：Neo4J，InfoGrid</li>
+<li>应用场景：社交网络，推荐系统等。专注于构建关系图谱</li>
+<li>数据模型：图结构</li>
+<li>优点：利用图结构相关算法。比如最短路径寻址，N度关系查找等</li>
+<li>缺点：很多时候需要对整个图做计算才能得出需要的信息。不易做分布式</li>
+</ul>
+</li>
+</ul>
+<h3 id="分布式数据库中cap原理capbase">分布式数据库中CAP原理CAP+BASE</h3>
+<ul>
+<li>传统的ACID
+<ol>
+<li>Atomic</li>
+<li>Consistency</li>
+<li>Isolation</li>
+<li>Durability</li>
+</ol>
+</li>
+<li>CAP
+<ol>
+<li>C：Consistency（强一致性）</li>
+<li>A：Availability（可用性）</li>
+<li>P：Partition tolerance（分区容错性）</li>
+</ol>
+</li>
+<li>CAP的3进2
+<ul>
+<li>CAP理论的核心是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性这三个需求，最多只能实现上面的两点，而由于当前网络硬件肯定会出现延迟丢包等问题，所以分区容错性必须要实现。</li>
+<li>因此CAP原理将NoSQL数据库分成了满足CA原则、满足CP原则和满足AP原则三大类：
+<ol>
+<li>CA  单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大。如：RDBMS</li>
+<li>CP 满足一致性，分区容错性的系统，通常性能不是特别高。如：Redis、Mongodb</li>
+<li>AP  满足可用性，分区容错性的系统，通常可能对一致性要求低一些。如：CouchDB</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>BASE：为了解决关系数据库强一致性引起的可用性降低而提出的解决方案：通过让系统放松对某一时刻数据一致性的要求来换取系统整体伸缩性和性能上的改观。
+<ol>
+<li>Basically Available 基本可用</li>
+<li>Soft state 软状态</li>
+<li>Eventually consistent 最终一致</li>
+</ol>
+</li>
+</ul>
+
+                        </div>
+                        
+                            <div class="post-toc">
+                                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#nosql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9B%9B%E5%A4%A7%E5%88%86%E7%B1%BB">NoSQL数据库的四大分类：</a></li>
+<li><a href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%ADcap%E5%8E%9F%E7%90%86capbase">分布式数据库中CAP原理CAP+BASE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+                            </div>
+                            
                                 
                                     
+                                        <!--en-->
+                                        <section class="post-copyright en">
+                                            <p class="copyright-item">
+                                                <span>Author:</span>
+                                                <span>biu~</span>
+                                            </p>
 
-                                        <article class="archive-item">
-                                            <a class="archive-item-link" href="https://qyylovexqx.github.io/post/hello-gridea/">
-                                                Tips
-                                            </a>
-                                            <span class="archive-item-date">2018-12-12 </span>
-                                        </article>
+                                            <p class="copyright-item">
+                                                <span>Permalink:</span>
+                                                <span><a href="https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/">https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/</a></span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>License:</span>
+                                                <span>MIT License</span>
+                                            </p>
+                                        </section>
                                         
-                                            
                                                 
-                    </div>
-                    <div class="pagination-container">
-                        
-                                                
+                                                    
+                                                        <!-- Share-->
+                                                        <span style="margin-right:15px">
+                                                    <i class="post-share"></i>
+                                                    <span>Share:</span>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/&sharesource=qzone&title=Redis学习笔记&lt;1、基础知识&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585564707402&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/&sharesource=weibo&title=Redis学习笔记&lt;1、基础知识&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585564707402 "><i class="fa fa-weibo "></i></a>
                                                         
+                                                                </span>
+                                                                <!--en-->
+                                                                <section class="post-tags en ">
+                                                                    <div>
+                                                                        <span>Tag(s):</span>
+                                                                        <span class="tag ">
+                        
+                        
+                        <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">#
+                                                Redis
+                                                    </a>
+                                                    
+                                                        
+                                                            </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="javascript:window.history.back();">back</a>
+                                                                        <span>&dot;</span>
+                                                                        <a href="#">home</a>
+                                                                    </div>
+                                                                </section>
                                                                 
-                    </div>
+                                                                                <!---->
+                                                                                <section class="post-nav">
+                                                                                    
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">
+                                                                                            Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt;
+                                                                                        </a>
+                                                                                        
+                                                                                            
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
+                                                                                                    JVM读书笔记&lt;1&gt;
+                                                                                                </a>
+                                                                                                
+                                                                                </section>
+                    </article>
                 </div>
+                
+                                            
             </div>
+    </div>
+    </div>
     </div>
     
         <footer id="footer" class="footer">
@@ -290,5 +465,8 @@
                     
         </div>
 </body>
+<script>
+    scroll();
+</script>
 
 </html>
