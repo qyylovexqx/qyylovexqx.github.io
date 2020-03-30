@@ -162,7 +162,7 @@
                     <article class="post-wrap">
                         <header class="post-header">
                             <h1 class="post-title">
-                                JVM读书笔记&lt;2、对象的存储布局和访问方式&gt;
+                                JVM读书笔记&lt;5、GC的内容&gt;
                             </h1>
                             
                                 <!--en-->
@@ -172,12 +172,12 @@
                                         biu~
                                     </a>
                                     <span class="post-time">
-                                Date: <a href="#">2019-10-02</a>
+                                Date: <a href="#">2019-10-05</a>
                             </span>
                                     <span class="post-readtime">Reading Time:<a
-                                    href="#">0.9
+                                    href="#">0.5
                                     mins</a></span>
-                                    <span class="post-words">words:<a href="#">265</a></span>
+                                    <span class="post-words">words:<a href="#">138</a></span>
                                     
                                         <span class="post-category">
                                 Category:
@@ -194,26 +194,15 @@
                         </header>
                         
                         <div class="post-content">
-                            <h2 id="对象的存储布局">对象的存储布局：</h2>
-<ol>
-<li>对象头：①类型指针②MarkWord(数组还有③数组长度)。</li>
-<li>实例数据。</li>
-<li>对齐填充：当对象大小不为8字节的倍数时，需要进行填充。<br>
-【注】MarkWord：存储了①HashCode②GC分代年龄③锁状态标志④线程持有的锁⑤偏向线程ID等信息</li>
-</ol>
-<h2 id="对象的访问方式">对象的访问方式：</h2>
-<ol>
-<li>
-<p>直接地址指针访问：堆中对象存放：①对象实例数据②对象类型数据指针。<br>
-优点：速度快<br>
-具体访问过程：栈—&gt;堆中的对象实例数据/堆中的对象类型数据的指针—&gt;方法区中的对象类型数据</p>
-</li>
-<li>
-<p>通过句柄访问：句柄池存放①对象实例数据的指针②对象类型数据的指针。<br>
-优点：GC时，若对象在堆中被移动，只需要变动句柄池的对象实例数据的指针，无须移动栈中引用<br>
-具体访问过程：栈—&gt;堆中的句柄池—&gt;堆中的对象实例数据/方法区中的对象类型数据</p>
-</li>
-</ol>
+                            <p>GC的两个主要区域：堆和方法区。</p>
+<h2 id="方法区的回收">方法区的回收：</h2>
+<p>1、常量池的回收。<br>
+2、类的卸载。<br>
+【注】卸载类的三个条件。①该类所有的实例都被回收。②该类的类加载器已经被回收。③该类对应的Class对象没有被引用。</p>
+<h2 id="堆的回收对于堆的回收主要就是回收实例数据对象所占用的空间">堆的回收：对于堆的回收，主要就是回收实例数据对象所占用的空间。</h2>
+<p>对于堆的回收主要从两大方面进行学习：<br>
+1、垃圾回收算法(4种)<br>
+2、垃圾收集器(七种)</p>
 
                         </div>
                         
@@ -221,8 +210,8 @@
                                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AD%98%E5%82%A8%E5%B8%83%E5%B1%80">对象的存储布局：</a></li>
-<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F">对象的访问方式：</a></li>
+<li><a href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E7%9A%84%E5%9B%9E%E6%94%B6">方法区的回收：</a></li>
+<li><a href="#%E5%A0%86%E7%9A%84%E5%9B%9E%E6%94%B6%E5%AF%B9%E4%BA%8E%E5%A0%86%E7%9A%84%E5%9B%9E%E6%94%B6%E4%B8%BB%E8%A6%81%E5%B0%B1%E6%98%AF%E5%9B%9E%E6%94%B6%E5%AE%9E%E4%BE%8B%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E6%89%80%E5%8D%A0%E7%94%A8%E7%9A%84%E7%A9%BA%E9%97%B4">堆的回收：对于堆的回收，主要就是回收实例数据对象所占用的空间。</a></li>
 </ul>
 </li>
 </ul>
@@ -240,7 +229,7 @@
 
                                             <p class="copyright-item">
                                                 <span>Permalink:</span>
-                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/</a></span>
+                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/</a></span>
                                             </p>
 
                                             <p class="copyright-item">
@@ -255,9 +244,9 @@
                                                         <span style="margin-right:15px">
                                                     <i class="post-share"></i>
                                                     <span>Share:</span>
-                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/"><i class="fa fa-qrcode"></i></a>
-                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/&sharesource=qzone&title=JVM读书笔记&lt;2、对象的存储布局和访问方式&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585568837120&summary="><i class="fa fa-qq"></i></a>
-                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/&sharesource=weibo&title=JVM读书笔记&lt;2、对象的存储布局和访问方式&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585568837120 "><i class="fa fa-weibo "></i></a>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/&sharesource=qzone&title=JVM读书笔记&lt;5、GC的内容&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585568837120&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/&sharesource=weibo&title=JVM读书笔记&lt;5、GC的内容&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585568837120 "><i class="fa fa-weibo "></i></a>
                                                         
                                                                 </span>
                                                                 <!--en-->
@@ -284,13 +273,13 @@
                                                                                 <!---->
                                                                                 <section class="post-nav">
                                                                                     
-                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lovejvm-que-ding-la-ji-de-fang-shi-greater/">
-                                                                                            JVM读书笔记&lt;3、JVM确定垃圾的方式&gt;
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
+                                                                                            JVM读书笔记&lt;1&gt;
                                                                                         </a>
                                                                                         
                                                                                             
-                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
-                                                                                                    Redis读书笔记&lt;5、Redis中的主从复制和哨兵模式&gt;
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/">
+                                                                                                    JVM读书笔记&lt;4、对象收集的两次标记过程和GC时机&gt;
                                                                                                 </a>
                                                                                                 
                                                                                 </section>
