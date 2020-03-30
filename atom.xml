@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://qyylovexqx.github.io</id>
     <title>biu~</title>
-    <updated>2020-03-30T11:57:18.094Z</updated>
+    <updated>2020-03-30T12:02:34.223Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://qyylovexqx.github.io"/>
     <link rel="self" href="https://qyylovexqx.github.io/atom.xml"/>
@@ -11,53 +11,18 @@
     <icon>https://qyylovexqx.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, biu~</rights>
     <entry>
+        <title type="html"><![CDATA[JVM读书笔记<8、Class文件的结构以及类加载的过程>]]></title>
+        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/</id>
+        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/">
+        </link>
+        <updated>2020-03-30T11:57:21.000Z</updated>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[JVM读书笔记<1>]]></title>
         <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/</id>
         <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
         </link>
         <updated>2020-03-30T08:40:05.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<7、对象的内存分配策略和新生代晋升老年代策略>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less7dui-xiang-de-nei-cun-fen-pei-ce-lue-he-xin-sheng-dai-jin-sheng-lao-nian-dai-ce-lue-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less7dui-xiang-de-nei-cun-fen-pei-ce-lue-he-xin-sheng-dai-jin-sheng-lao-nian-dai-ce-lue-greater/">
-        </link>
-        <updated>2019-10-08T11:55:28.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<6、四种垃圾回收算法和七种垃圾收集器>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less6si-chong-la-ji-hui-shou-suan-fa-he-qi-chong-la-ji-shou-ji-qi-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less6si-chong-la-ji-hui-shou-suan-fa-he-qi-chong-la-ji-shou-ji-qi-greater/">
-        </link>
-        <updated>2019-10-07T11:47:23.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<5、GC的内容>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less5gc-de-nei-rong-greater/">
-        </link>
-        <updated>2019-10-05T11:41:19.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<4、对象收集的两次标记过程和GC时机>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/">
-        </link>
-        <updated>2019-10-04T11:36:43.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<3、JVM确定垃圾的方式>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lovejvm-que-ding-la-ji-de-fang-shi-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lovejvm-que-ding-la-ji-de-fang-shi-greater/">
-        </link>
-        <updated>2019-10-03T11:33:47.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JVM读书笔记<2、对象的存储布局和访问方式>]]></title>
-        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/">
-        </link>
-        <updated>2019-10-02T11:29:54.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Redis读书笔记<5、Redis中的主从复制和哨兵模式>]]></title>
@@ -79,5 +44,19 @@
         <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
         </link>
         <updated>2019-09-12T10:34:14.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Redis读书笔记<2、Redis简介+Redis五大数据类型>]]></title>
+        <id>https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/</id>
+        <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">
+        </link>
+        <updated>2019-09-11T10:33:07.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Redis学习笔记<1、基础知识>]]></title>
+        <id>https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/</id>
+        <link href="https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/">
+        </link>
+        <updated>2019-09-10T10:26:55.000Z</updated>
     </entry>
 </feed>

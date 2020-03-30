@@ -162,7 +162,7 @@
                     <article class="post-wrap">
                         <header class="post-header">
                             <h1 class="post-title">
-                                Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt;
+                                JVM读书笔记&lt;8、Class文件的结构以及类加载的过程&gt;
                             </h1>
                             
                                 <!--en-->
@@ -172,20 +172,13 @@
                                         biu~
                                     </a>
                                     <span class="post-time">
-                                Date: <a href="#">2019-09-11</a>
+                                Date: <a href="#">2020-03-30</a>
                             </span>
                                     <span class="post-readtime">Reading Time:<a
-                                    href="#">6.3
+                                    href="#">1.6
                                     mins</a></span>
-                                    <span class="post-words">words:<a href="#">1591</a></span>
+                                    <span class="post-words">words:<a href="#">474</a></span>
                                     
-                                        <span class="post-category">
-                                Category:
-                                
-                                <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">Redis</a>
-                                
-                            </span>
-                                        
                                             Views:
                                             <span data-hk-page="current"> - </span>
                                             
@@ -194,207 +187,28 @@
                         </header>
                         
                         <div class="post-content">
-                            <h3 id="redis-remote-dictionary-server远程字典服务器">Redis ： REmote  DIctionary  Server（远程字典服务器）</h3>
-<ul>
-<li>简介：高性能key/value分布式内存数据库，基于内存运行。支持持久化的NoSQL数据库</li>
-<li>特点
-<ol>
-<li>支持数据的持久化，可以将内存中的数据保存在磁盘上，重启时可以再次加载使用</li>
-<li>不仅支持简单的key-value类型的数据，同时还提供list,set,zset,hash等数据结构的存储</li>
-<li>Redis支持数据的备份，即master-slave模式的数据备份</li>
-</ol>
-</li>
-<li>功能
-<ol>
-<li>内存存储和持久化：redis支持异步将内存中的数据写到硬盘上，同时不影响继续服务</li>
-<li>取最新N个数据的操作：如可以将最新的10条评论的ID放在Redis的List集合里面</li>
-<li>模拟类似于HttpSession这种需要设定过期时间的功能</li>
-<li>发布、订阅消息系统</li>
-<li>定时器、计数器</li>
-</ol>
-</li>
-<li>默认端口6379</li>
-</ul>
-<h3 id="redis五大数据类型">Redis五大数据类型</h3>
-<ul>
-<li>Redis键（key）
-<ul>
-<li>常用</li>
-<li>案例：
-<ul>
-<li>keys * 查询某个数据库的所有key</li>
-<li>Exists key的名字  ，判断数据库中是否存在该key。(结果<mark>1，存在；结果</mark>0，不存在)</li>
-<li>move key dbNumber ,如 move k1 3，将当前库中的k1移动到数据库3中</li>
-<li>Expire key 秒钟:为给定的key设置过期时间</li>
-<li>ttl key 查看还有多少秒过期，-1表示永远不过期，-2 表示已过期</li>
-<li>type key 查看key的类型</li>
-<li>del key 删除key对应的键值对</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Redis值（value）
-<ol>
-<li>Redis字符串(String)-- 单键单值
-<ul>
-<li>set/get/del/append/strlen
-<ul>
-<li>追加：append  key  追加内容</li>
-<li>获取字符串长度：strlen  key</li>
-</ul>
-</li>
-<li>Incr/decr/incrby/decrby。（一定是数字才能加减）
-<ul>
-<li>加一减一：Incr/decr  key</li>
-<li>加减某个值：incrby/decrby key 加减值</li>
-</ul>
-</li>
-<li>getrange/setrange
-<ul>
-<li>获取、设置某个区间范围内的值</li>
-<li>(0，-1)表示整个区间</li>
-</ul>
-</li>
-<li>setex(set with expire)键秒值、setnx(set if not exit)
-<ul>
-<li>setex 键 存活时间 值</li>
-<li>防覆盖：setnx 键 值</li>
-</ul>
-</li>
-<li>mset/mget/msetnx
-<ul>
-<li>批量插入: mset 键1 值1 键2 值2 键3 值3</li>
-<li>批量获取：mget 键1 键2 键3</li>
-<li>批量防覆盖插入：msetnx 键1 值1 键2 值2 键3 值3</li>
-</ul>
-</li>
-<li>getset(先get再set)</li>
-</ul>
-</li>
-<li>Redis列表(List) 单键多值
-<ul>
-<li>总结：
-<ul>
-<li>本质是字符串链表，left/right都可以插入添加</li>
-<li>如果键不存在，则创建新的链表</li>
-<li>如果键已存在，新增内容</li>
-<li>如果值完全移除，对应的键也就消失了</li>
-<li>链表的操作无论是头和尾效率都极高，但如果是对中间元素进行操作，则效率比较低</li>
-</ul>
-</li>
-<li>API
-<ul>
-<li>lpush/rpush/lrange
-<ul>
-<li>Lpush  从左边依次插入（类似于头插法）：Lpush 列表 值1 值2 值3 ...</li>
-<li>Rpush 从右边依次插入 （类似于尾插法）：Rpush 列表 值1 值2 值3 ...</li>
-<li>Lrange 读取范围内的数据：Lrange 列表 起始下标  结束下标</li>
-</ul>
-</li>
-<li>Lpop、Rpop：从左边或者从右边出栈。Lpop/Rpop 列表</li>
-<li>Lindex:按照索引下标获得元素。Lindex 列表 下标</li>
-<li>LLEN：获取列表长度</li>
-<li>Lrem key 删除N个value值</li>
-<li>Ltrim key 开始index 结束index。截取指定范围的值后再赋值给Key，本质就是subList</li>
-<li>RpopLpush 源列表 目的列表。将原列表中的最后一个元素插入到目的列表的开头</li>
-<li>Lset key index value。设置列表key中index上的值为value</li>
-<li>Linsert key before/after 值1 值2</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Redis集合（Set）单键多值
-<ul>
-<li>API
-<ul>
-<li>Sadd/smembers/sismember
-<ul>
-<li>Sadd 往集合中添加元素(自动去重)：sadd 集合名  元素1 元素2 元素3</li>
-<li>Smembers 查看集合中的所有元素：Smembers 集合名</li>
-<li>sismember</li>
-</ul>
-</li>
-<li>scard 获取集合里面的元素个数：scard 集合名</li>
-<li>Srem key value 删除集合中的元素：Srem 集合名 元素</li>
-<li>Srandmember  集合名  某个值x：从集合中每次随机挑选出x个元素</li>
-<li>Spop key ：每次从集合中随机选一个元素出栈</li>
-<li>Smove key1 key2  key1的某个元素：将key1集合中的某个元素放入key2集合中</li>
-<li>数学集合类
-<ul>
-<li>差集sdiff: sdiff 集合1 集合2 。  找出在集合1里，但不在集合2里的元素</li>
-<li>交集sinter:sdiff 集合1 集合2。 找出既在集合1里，也在集合2里的元素</li>
-<li>并集sunion: sunion 集合1 集合2。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Redis哈希（Hash）KV模式不变，但V是一个键值对
-<ul>
-<li>Hset/hget/hmset/hmget/hgetall/hdel
-<ul>
-<li>Hset 表 键 值：向表中插入一个键值对，如hset user name qyy</li>
-<li>Hget 表 键：从表中获取键的值，如hget user name</li>
-<li>Hmset 表 键1 值1 键2 值2 键3 值3：向表中插入多个键值对 hmset user age 24 sex 1</li>
-<li>hgetall 表:获取表中所有键值对</li>
-<li>hdel 表 键：删除表中某个键值对</li>
-</ul>
-</li>
-<li>hlen 表：查看表中键值对数目</li>
-<li>hexists  表 表中某个key：判断表中是否存在某个键</li>
-<li>Hkeys/hvals
-<ul>
-<li>hkeys 表：获取某个表中的所有键</li>
-<li>Hvals 表：获取某个表中的所有值</li>
-</ul>
-</li>
-<li>hincrby/hincrbyfloat
-<ul>
-<li>hincrby 表 键  增加数：将表中某个键的值+增加数。如：hincrby user age 2</li>
-<li>hincrbyfloat 表 键 增加数：将表中某个键的值+增加数。如hincrbyfloat user score 0.6</li>
-</ul>
-</li>
-<li>Hsetnx 表 键 值：当表中没有该键值时，插入该键值</li>
-</ul>
-</li>
-<li>Redis有序集合Zset（sorted set）
-<ul>
-<li>在set基础上，加一个score值。sadd k1 v1 v2 v3 ---&gt;zadd k1 score1 v1  score2 v2  score3 v3</li>
-<li>API
-<ul>
-<li>Zadd/zrange
-<ul>
-<li>Zadd:例如zadd mySortedSet 10 v1 11 v2 13 v3</li>
-<li>Zrange 集合 起始下标 结束下标：获取集合中起始下标到结束下标的所有元素</li>
-<li>Zrange 集合 起始下标 结束下标 withscores ：获取集合中起始下标到结束下标的所有元素，并附带score</li>
-</ul>
-</li>
-<li>Zrangebyscore  集合  开始score 结束score
-<ul>
-<li>withscores：附带scores信息，如Zrangebyscore  集合  开始score 结束score withscores</li>
-<li>（ ： 不包含，如Zrangebyscore  集合  (开始score (结束score   。 不包含开始score和结束score</li>
-<li>Limit 起始地址个数 ：作用是返回限制。Zrangebyscore  集合  开始score 结束score  limit 2  3。从一开始的结果集中的第二个元素开始，找出三个元素返回</li>
-</ul>
-</li>
-<li>Zrem 集合 元素：删除元素</li>
-<li>Zcard/zcount/zrank/zscore
-<ul>
-<li>Zcard  集合：获取集合中的总元素数目</li>
-<li>zcount  集合  起始score 结束score：获取score区间的元素数目</li>
-<li>Zrank 集合 元素：获取集合中元素的下标</li>
-<li>Zscore 集合 元素：获取集合中元素的score值</li>
-</ul>
-</li>
-<li>zrevrank 集合 values值，作用是逆序获得下标值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<p>[注] 官方命令文档：https://www.redis.net.cn/order/</p>
+                            <h2 id="class文件结构">Class文件结构</h2>
+<p>1、魔数和版本号<br>
+2、常量池：字面量和符号引用。【注】类加载进内存后，符号引号还会被翻译为直接地址引用<br>
+符号引用包括：①类和接口的全限定名、②字段的名称和描述符。③方法的名称和描述符。<br>
+3、访问标志<br>
+4、字段表：用于描述接口或类中声明的变量。包括静态/成员变量，不包括方法内的局部变量<br>
+5、方法表：用于描述方法<br>
+6、属性表：字段表、方法表中都有自己的属性表。比如方法表中有Code、LocalVariableTable属性</p>
+<h2 id="类加载过程">类加载过程</h2>
+<p>1、加载：<br>
+* ①通过类的全限定名获取该类的二进制字节流。<br>
+* ②将字节流所代表的的静态存储结构转化为方法区的运行时数据结构<br>
+* ③在方法区中生成代表该类的Class对象，作为方法区该类各种数据的访问入口。<br>
+2、连接：<br>
+* 2.1验证：<br>
+* ①文件格式验证(验证字节流)：验证字节流是否符合Class文件格式的规范，如魔						数、版本号验证。<br>
+* ②元数据验证(验证方法区中的存储结构)：对类的元数据信息进		<br>
+行语义校验。<br>
+* ③字节码验证(验证方法区中的存储结构)：程序语义校验。④符号引用验证(验证方法区中的存储             结构)：对类自身以外的信息进行匹配性校验。<br>
+* 2.2准备：为静态变量分配内存，并设置静态变量默认值。常量直接赋初始值。<br>
+* 2.3解析：将常量池中的符号引用(类、接口、字段、方法等符号引用)转换为直接引用<br>
+3、初始化：执行类构造器<clinit>()方法，包含了类变量的赋值语句和静态代码块的语句</p>
 
                         </div>
                         
@@ -402,12 +216,8 @@
                                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#redis-remote-dictionary-server%E8%BF%9C%E7%A8%8B%E5%AD%97%E5%85%B8%E6%9C%8D%E5%8A%A1%E5%99%A8">Redis ： REmote  DIctionary  Server（远程字典服务器）</a></li>
-<li><a href="#redis%E4%BA%94%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">Redis五大数据类型</a></li>
-</ul>
-</li>
+<li><a href="#class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84">Class文件结构</a></li>
+<li><a href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B">类加载过程</a></li>
 </ul>
 </li>
 </ul>
@@ -425,7 +235,7 @@
 
                                             <p class="copyright-item">
                                                 <span>Permalink:</span>
-                                                <span><a href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/</a></span>
+                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/</a></span>
                                             </p>
 
                                             <p class="copyright-item">
@@ -440,9 +250,9 @@
                                                         <span style="margin-right:15px">
                                                     <i class="post-share"></i>
                                                     <span>Share:</span>
-                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/"><i class="fa fa-qrcode"></i></a>
-                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/&sharesource=qzone&title=Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585569666352&summary="><i class="fa fa-qq"></i></a>
-                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/&sharesource=weibo&title=Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585569666352 "><i class="fa fa-weibo "></i></a>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/&sharesource=qzone&title=JVM读书笔记&lt;8、Class文件的结构以及类加载的过程&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585569666352&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less8class-wen-jian-de-jie-gou-yi-ji-lei-jia-zai-de-guo-cheng-greater/&sharesource=weibo&title=JVM读书笔记&lt;8、Class文件的结构以及类加载的过程&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585569666352 "><i class="fa fa-weibo "></i></a>
                                                         
                                                                 </span>
                                                                 <!--en-->
@@ -451,12 +261,6 @@
                                                                         <span>Tag(s):</span>
                                                                         <span class="tag ">
                         
-                        
-                        <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">#
-                                                Redis
-                                                    </a>
-                                                    
-                                                        
                                                             </span>
                                                                     </div>
                                                                     <div>
@@ -469,13 +273,9 @@
                                                                                 <!---->
                                                                                 <section class="post-nav">
                                                                                     
-                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
-                                                                                            Redis读书笔记&lt;3、Redis两种持久化方式&gt;
-                                                                                        </a>
-                                                                                        
                                                                                             
-                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/">
-                                                                                                    Redis学习笔记&lt;1、基础知识&gt;
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
+                                                                                                    JVM读书笔记&lt;1&gt;
                                                                                                 </a>
                                                                                                 
                                                                                 </section>
