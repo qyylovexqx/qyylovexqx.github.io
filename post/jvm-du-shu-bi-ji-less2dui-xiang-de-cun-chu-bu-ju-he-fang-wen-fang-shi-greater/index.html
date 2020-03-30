@@ -162,7 +162,7 @@
                     <article class="post-wrap">
                         <header class="post-header">
                             <h1 class="post-title">
-                                Redis读书笔记&lt;4、Redis中的事务&gt;
+                                JVM读书笔记&lt;2、对象的存储布局和访问方式&gt;
                             </h1>
                             
                                 <!--en-->
@@ -172,17 +172,17 @@
                                         biu~
                                     </a>
                                     <span class="post-time">
-                                Date: <a href="#">2019-09-13</a>
+                                Date: <a href="#">2019-10-02</a>
                             </span>
                                     <span class="post-readtime">Reading Time:<a
-                                    href="#">2.1
+                                    href="#">0.9
                                     mins</a></span>
-                                    <span class="post-words">words:<a href="#">595</a></span>
+                                    <span class="post-words">words:<a href="#">265</a></span>
                                     
                                         <span class="post-category">
                                 Category:
                                 
-                                <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">Redis</a>
+                                <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">JVM</a>
                                 
                             </span>
                                         
@@ -194,46 +194,26 @@
                         </header>
                         
                         <div class="post-content">
-                            <h3 id="redis的事务">Redis的事务</h3>
-<ul>
-<li>常用命令
-<ul>
-<li>DISCARD:取消事务，放弃执行事务块内的所有命令</li>
-<li>EXEC：执行所有事务块内的命令</li>
-<li>MULTI：标记一个事务块的开始</li>
-<li>UNWATCH：取消WATCH命令对所有key的监视</li>
-<li>WATCH key [key.....]：监视一个（或多个）key，如果在事务执行之前，这个（或这些）key被其他命令所改动，那么事务将被打断。</li>
-</ul>
-</li>
-<li>正常执行：MULTI   操作1 操作2  操作3 EXEC</li>
-<li>放弃事务：MULTI   操作1 操作2  操作3 DISCARD</li>
-<li>事务异常：
+                            <h2 id="对象的存储布局">对象的存储布局：</h2>
 <ol>
-<li>命令入队前出错也事务中的其他操作全部都不能执行：比如执行非法命令，命令没有入队。</li>
-<li>命令入队后出错事务中的其他操作可以正常执行：比如对非数字字符串进行加减操作，开启事务后，不会直接报错，而是会加入队列</li>
+<li>对象头：①类型指针②MarkWord(数组还有③数组长度)。</li>
+<li>实例数据。</li>
+<li>对齐填充：当对象大小不为8字节的倍数时，需要进行填充。<br>
+【注】MarkWord：存储了①HashCode②GC分代年龄③锁状态标志④线程持有的锁⑤偏向线程ID等信息</li>
 </ol>
-</li>
-<li>Watch监控：
-<ul>
-<li>Watch指令，类似乐观锁，事务提交时，如果key的值已被别的客户端改变，则整个事务都不会被执行</li>
-<li>通过Watch命令在事务执行之前监控了多个keys，倘若在WATCH之后又任何Key的值发生了变化，则EXEC命令执行的事务都将被放弃，同时返回Nullmulti-bulk应答以通知调用者事务执行失败</li>
-</ul>
-</li>
-<li>事务的三个阶段
+<h2 id="对象的访问方式">对象的访问方式：</h2>
 <ol>
-<li>开启：以MULTI开始一个事务</li>
-<li>入队：将多个命令入队到事务中，接到这些命令并不会立即执行，而是放到等待执行的事务队列里</li>
-<li>执行：由EXEC命令触发事务</li>
-</ol>
+<li>
+<p>直接地址指针访问：堆中对象存放：①对象实例数据②对象类型数据指针。<br>
+优点：速度快<br>
+具体访问过程：栈—&gt;堆中的对象实例数据/堆中的对象类型数据的指针—&gt;方法区中的对象类型数据</p>
 </li>
-<li>事务的三个特性
-<ol>
-<li>单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</li>
-<li>没有隔离级别的概念：队列中的命令没有提交之前都不会实际的被执行，因为事务提交前任何指令都不会被实际执行，也就不存在&quot;事务内的查询要看到事务里的更新，在事务外查询不能看到”这个问题</li>
-<li>不保证原子性：redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行，没有回滚。见事务异常第二条。</li>
-</ol>
+<li>
+<p>通过句柄访问：句柄池存放①对象实例数据的指针②对象类型数据的指针。<br>
+优点：GC时，若对象在堆中被移动，只需要变动句柄池的对象实例数据的指针，无须移动栈中引用<br>
+具体访问过程：栈—&gt;堆中的句柄池—&gt;堆中的对象实例数据/方法区中的对象类型数据</p>
 </li>
-</ul>
+</ol>
 
                         </div>
                         
@@ -241,11 +221,8 @@
                                 <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li>
-<ul>
-<li><a href="#redis%E7%9A%84%E4%BA%8B%E5%8A%A1">Redis的事务</a></li>
-</ul>
-</li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AD%98%E5%82%A8%E5%B8%83%E5%B1%80">对象的存储布局：</a></li>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E6%96%B9%E5%BC%8F">对象的访问方式：</a></li>
 </ul>
 </li>
 </ul>
@@ -263,7 +240,7 @@
 
                                             <p class="copyright-item">
                                                 <span>Permalink:</span>
-                                                <span><a href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/">https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/</a></span>
+                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/</a></span>
                                             </p>
 
                                             <p class="copyright-item">
@@ -278,9 +255,9 @@
                                                         <span style="margin-right:15px">
                                                     <i class="post-share"></i>
                                                     <span>Share:</span>
-                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/"><i class="fa fa-qrcode"></i></a>
-                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/&sharesource=qzone&title=Redis读书笔记&lt;4、Redis中的事务&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585568015895&summary="><i class="fa fa-qq"></i></a>
-                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/&sharesource=weibo&title=Redis读书笔记&lt;4、Redis中的事务&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585568015895 "><i class="fa fa-weibo "></i></a>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/&sharesource=qzone&title=JVM读书笔记&lt;2、对象的存储布局和访问方式&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585568015895&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/&sharesource=weibo&title=JVM读书笔记&lt;2、对象的存储布局和访问方式&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585568015895 "><i class="fa fa-weibo "></i></a>
                                                         
                                                                 </span>
                                                                 <!--en-->
@@ -290,8 +267,8 @@
                                                                         <span class="tag ">
                         
                         
-                        <a href="https://qyylovexqx.github.io/tag/HV7v7MPwD/">#
-                                                Redis
+                        <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">#
+                                                JVM
                                                     </a>
                                                     
                                                         
@@ -307,13 +284,13 @@
                                                                                 <!---->
                                                                                 <section class="post-nav">
                                                                                     
-                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
-                                                                                            Redis读书笔记&lt;5、Redis中的主从复制和哨兵模式&gt;
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
+                                                                                            JVM读书笔记&lt;1&gt;
                                                                                         </a>
                                                                                         
                                                                                             
-                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
-                                                                                                    Redis读书笔记&lt;3、Redis两种持久化方式&gt;
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
+                                                                                                    Redis读书笔记&lt;5、Redis中的主从复制和哨兵模式&gt;
                                                                                                 </a>
                                                                                                 
                                                                                 </section>
