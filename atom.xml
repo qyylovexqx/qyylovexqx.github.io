@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://qyylovexqx.github.io</id>
     <title>biu~</title>
-    <updated>2020-03-30T11:54:32.021Z</updated>
+    <updated>2020-03-30T11:57:18.094Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://qyylovexqx.github.io"/>
     <link rel="self" href="https://qyylovexqx.github.io/atom.xml"/>
@@ -16,6 +16,13 @@
         <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
         </link>
         <updated>2020-03-30T08:40:05.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JVM读书笔记<7、对象的内存分配策略和新生代晋升老年代策略>]]></title>
+        <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less7dui-xiang-de-nei-cun-fen-pei-ce-lue-he-xin-sheng-dai-jin-sheng-lao-nian-dai-ce-lue-greater/</id>
+        <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less7dui-xiang-de-nei-cun-fen-pei-ce-lue-he-xin-sheng-dai-jin-sheng-lao-nian-dai-ce-lue-greater/">
+        </link>
+        <updated>2019-10-08T11:55:28.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[JVM读书笔记<6、四种垃圾回收算法和七种垃圾收集器>]]></title>
@@ -72,12 +79,5 @@
         <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
         </link>
         <updated>2019-09-12T10:34:14.000Z</updated>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Redis读书笔记<2、Redis简介+Redis五大数据类型>]]></title>
-        <id>https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/</id>
-        <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">
-        </link>
-        <updated>2019-09-11T10:33:07.000Z</updated>
     </entry>
 </feed>
