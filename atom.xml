@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://qyylovexqx.github.io</id>
     <title>biu~</title>
-    <updated>2020-03-30T11:20:11.802Z</updated>
+    <updated>2020-03-30T11:20:35.767Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://qyylovexqx.github.io"/>
     <link rel="self" href="https://qyylovexqx.github.io/atom.xml"/>
@@ -11,18 +11,18 @@
     <icon>https://qyylovexqx.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, biu~</rights>
     <entry>
-        <title type="html"><![CDATA[Redis读书笔记<5、Redis中的主从复制和哨兵模式>]]></title>
-        <id>https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/</id>
-        <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
-        </link>
-        <updated>2020-03-30T10:37:33.000Z</updated>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[JVM读书笔记<1>]]></title>
         <id>https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/</id>
         <link href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
         </link>
         <updated>2020-03-30T08:40:05.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Redis读书笔记<5、Redis中的主从复制和哨兵模式>]]></title>
+        <id>https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/</id>
+        <link href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
+        </link>
+        <updated>2019-09-14T10:37:33.000Z</updated>
     </entry>
     <entry>
         <title type="html"><![CDATA[Redis读书笔记<4、Redis中的事务>]]></title>
