@@ -158,108 +158,138 @@
     }
 </script>
             <div class="main">
-                <div class="post-wrap archive">
-                    
+                <div class="container">
+                    <article class="post-wrap">
+                        <header class="post-header">
+                            <h1 class="post-title">
+                                JVM读书笔记&lt;4、对象收集的两次标记过程和GC时机&gt;
+                            </h1>
+                            
+                                <!--en-->
+                                <div class="post-meta en">
+                                    Author:
+                                    <a itemprop="author" rel="author" href="/">
+                                        biu~
+                                    </a>
+                                    <span class="post-time">
+                                Date: <a href="#">2019-10-04</a>
+                            </span>
+                                    <span class="post-readtime">Reading Time:<a
+                                    href="#">1.0
+                                    mins</a></span>
+                                    <span class="post-words">words:<a href="#">298</a></span>
+                                    
+                                        <span class="post-category">
+                                Category:
+                                
+                                <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">JVM</a>
+                                
+                            </span>
+                                        
+                                            Views:
+                                            <span data-hk-page="current"> - </span>
+                                            
+                                </div>
+                                
+                        </header>
                         
-                            <h3>
-                                2020
-                            </h3>
+                        <div class="post-content">
+                            <h2 id="对象收集过程的两次标记过程">对象收集过程的两次标记过程</h2>
+<ol>
+<li>通过枚举根节点做可达性分析检查，若不可达则进行第一次标记并筛选(筛选条件：该对象是否有必要执行finalize方法)。</li>
+<li>若没必要执行finalize方法(即finalize方法已经被执行过或者finalize方法未被重写)，则对象会被收集。若有必要执行finalize方法，则将该对象放入F-queue队列，并触发执行该对象finalize方法。之后GC会对F-queue队列上的对象进行第二次标记：在此期间，若对象重新与引用链建立关联，则将其移除即将回收的集合。否则进行回收。</li>
+</ol>
+<p>##GC的时机</p>
+<ol>
+<li>安全点(针对运行和就绪的线程)：①抢先式中断：发生GC时，将所有线程中断，然后恢复不在安全点上的线程继续运行，直到运行至安全点。②主动式中断：多个线程轮询在安全点设置的中断标志，为真时自己中断挂起。</li>
+<li>安全区域(针对Sleep和Bolcked线程)：处于安全区域的线程的引用关系不会发生变化。</li>
+</ol>
+
+                        </div>
+                        
+                            <div class="post-toc">
+                                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E6%94%B6%E9%9B%86%E8%BF%87%E7%A8%8B%E7%9A%84%E4%B8%A4%E6%AC%A1%E6%A0%87%E8%AE%B0%E8%BF%87%E7%A8%8B">对象收集过程的两次标记过程</a></li>
+</ul>
+</li>
+</ul>
+
+                            </div>
                             
                                 
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
-                                            JVM读书笔记&lt;1&gt;
-                                        </a><span class="archive-item-date">2020-03-30 </span></article>
                                     
+                                        <!--en-->
+                                        <section class="post-copyright en">
+                                            <p class="copyright-item">
+                                                <span>Author:</span>
+                                                <span>biu~</span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>Permalink:</span>
+                                                <span><a href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/">https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/</a></span>
+                                            </p>
+
+                                            <p class="copyright-item">
+                                                <span>License:</span>
+                                                <span>MIT License</span>
+                                            </p>
+                                        </section>
                                         
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                
-                                        
-                                            
-                            <h3>
-                                2019
-                            </h3>
-                            
-                                
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/">
-                                            JVM读书笔记&lt;4、对象收集的两次标记过程和GC时机&gt;
-                                        </a><span class="archive-item-date">2019-10-04 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lovejvm-que-ding-la-ji-de-fang-shi-greater/">
-                                            JVM读书笔记&lt;3、JVM确定垃圾的方式&gt;
-                                        </a><span class="archive-item-date">2019-10-03 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less2dui-xiang-de-cun-chu-bu-ju-he-fang-wen-fang-shi-greater/">
-                                            JVM读书笔记&lt;2、对象的存储布局和访问方式&gt;
-                                        </a><span class="archive-item-date">2019-10-02 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less5redis-zhong-de-zhu-cong-fu-zhi-he-shao-bing-mo-shi-greater/">
-                                            Redis读书笔记&lt;5、Redis中的主从复制和哨兵模式&gt;
-                                        </a><span class="archive-item-date">2019-09-14 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less4redis-zhong-de-shi-wu-greater/">
-                                            Redis读书笔记&lt;4、Redis中的事务&gt;
-                                        </a><span class="archive-item-date">2019-09-13 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-lovegreater/">
-                                            Redis读书笔记&lt;3、Redis两种持久化方式&gt;
-                                        </a><span class="archive-item-date">2019-09-12 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/redis-du-shu-bi-ji-less2greater/">
-                                            Redis读书笔记&lt;2、Redis简介+Redis五大数据类型&gt;
-                                        </a><span class="archive-item-date">2019-09-11 </span></article>
-                                    
-                                        
-                                
-                                    <article class="archive-item">
-                                        <a class="archive-item-link" href="https://qyylovexqx.github.io/post/redis-xue-xi-bi-ji-less1greater/">
-                                            Redis学习笔记&lt;1、基础知识&gt;
-                                        </a><span class="archive-item-date">2019-09-10 </span></article>
-                                    
-                                        
-                                            
-                </div>
-                <div class="pagination-container">
-                    
-                                            
+                                                
                                                     
-                                                            
+                                                        <!-- Share-->
+                                                        <span style="margin-right:15px">
+                                                    <i class="post-share"></i>
+                                                    <span>Share:</span>
+                                                        <a title="QR Code" target="_blank" href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/"><i class="fa fa-qrcode"></i></a>
+                                                        <a title="QQ" target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/&sharesource=qzone&title=JVM读书笔记&lt;4、对象收集的两次标记过程和GC时机&gt;&pics=https://qyylovexqx.github.io/images/avatar.png?v=1585568424553&summary="><i class="fa fa-qq"></i></a>
+                                                        <a title="Weibo" target="_blank" href="https://service.weibo.com/share/share.php?url=https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lessgreater/&sharesource=weibo&title=JVM读书笔记&lt;4、对象收集的两次标记过程和GC时机&gt; + " - " + &pic="https://qyylovexqx.github.io/images/avatar.png?v=1585568424553 "><i class="fa fa-weibo "></i></a>
+                                                        
+                                                                </span>
+                                                                <!--en-->
+                                                                <section class="post-tags en ">
+                                                                    <div>
+                                                                        <span>Tag(s):</span>
+                                                                        <span class="tag ">
+                        
+                        
+                        <a href="https://qyylovexqx.github.io/tag/41aBdzoD1/">#
+                                                JVM
+                                                    </a>
+                                                    
+                                                        
+                                                            </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="javascript:window.history.back();">back</a>
+                                                                        <span>&dot;</span>
+                                                                        <a href="#">home</a>
+                                                                    </div>
+                                                                </section>
+                                                                
+                                                                                <!---->
+                                                                                <section class="post-nav">
+                                                                                    
+                                                                                        <a class="prev" rel="prev" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-less1greater/">
+                                                                                            JVM读书笔记&lt;1&gt;
+                                                                                        </a>
+                                                                                        
+                                                                                            
+                                                                                                <a class="next" rel="next" href="https://qyylovexqx.github.io/post/jvm-du-shu-bi-ji-lovejvm-que-ding-la-ji-de-fang-shi-greater/">
+                                                                                                    JVM读书笔记&lt;3、JVM确定垃圾的方式&gt;
+                                                                                                </a>
+                                                                                                
+                                                                                </section>
+                    </article>
                 </div>
+                
+                                            
             </div>
+    </div>
+    </div>
     </div>
     
         <footer id="footer" class="footer">
@@ -364,5 +394,8 @@
                     
         </div>
 </body>
+<script>
+    scroll();
+</script>
 
 </html>
